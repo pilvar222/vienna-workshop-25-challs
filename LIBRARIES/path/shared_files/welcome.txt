@@ -1,0 +1,36 @@
+🛡️ VIENNA HACKING BOOTCAMP - WELCOME! 🛡️
+
+Welcome to the Vienna Hacking Bootcamp file sharing platform!
+
+This is a secure file sharing system designed specifically for our
+cybersecurity training program. 
+
+🔐 SECURITY FEATURES:
+- Advanced path sanitization
+- Input validation and filtering  
+- Restricted directory access
+- Comprehensive logging
+
+📚 AVAILABLE RESOURCES:
+- Training materials
+- Lab exercises
+- Reference documentation
+- Shared notes from instructors
+
+⚠️ IMPORTANT NOTICE:
+All file access is monitored and logged for security purposes.
+Only authorized bootcamp participants should access these files.
+
+🚀 GETTING STARTED:
+1. Browse available files using the "Shared Files" menu
+2. Click "View" to read any file
+3. Use the copy function to share file contents
+4. Report any issues to the bootcamp instructors
+
+Happy hacking! 💻
+- The Vienna Hacking Bootcamp Team
+
+--
+Platform Version: 1.0
+Security Level: HIGH
+Last Updated: 2024 

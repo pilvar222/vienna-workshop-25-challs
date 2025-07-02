@@ -1,0 +1,22 @@
+services:
+  bot: # taken from https://github.com/kevin-mizu/bot-ctf-template - the modified part is surround by "VIENNA CHALLENGE SPECIFIC"
+    build: xss-bot/
+    ports:
+      - "9002:55555"
+    environment:
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+      # - ENVIRONMENT=development
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+      - all
+    cap_add:
+      - CAP_SETGID # Needed for su-exec
+      - CAP_SETUID # Needed for su-exec
+    tmpfs:
+      - /tmp:mode=1733,exec
+  challenge:
+    build: app/
+    ports:
+      - "9003:443"
+    restart: unless-stopped

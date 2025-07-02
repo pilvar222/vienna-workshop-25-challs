@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Clicker Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .game-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .instructions {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .click-button {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            box-shadow: 0 10px 30px rgba(238, 90, 36, 0.4);
+            margin: 20px 0;
+        }
+        
+        .click-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(238, 90, 36, 0.6);
+        }
+        
+        .click-button:active {
+            transform: scale(0.95);
+        }
+        
+        .click-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .start-button {
+            background: linear-gradient(45deg, #4ecdc4, #2ecc71);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 10px;
+        }
+        
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .message.success {
+            background: rgba(46, 204, 113, 0.3);
+            border: 2px solid #2ecc71;
+        }
+        
+        .message.error {
+            background: rgba(231, 76, 60, 0.3);
+            border: 2px solid #e74c3c;
+        }
+        
+        .message.info {
+            background: rgba(52, 152, 219, 0.3);
+            border: 2px solid #3498db;
+        }
+        
+        .flag {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            transition: width 0.1s ease;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🚀 Speed Clicker Challenge</h1>
+        <div class="instructions">
+            Click the button 100 times in under 3 seconds to win the flag!
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div>Score</div>
+                <div id="score">0/100</div>
+            </div>
+            <div class="stat-item">
+                <div>Time</div>
+                <div id="timer">0.00s</div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress" style="width: 0%"></div>
+        </div>
+        
+        <button id="startButton" class="start-button" onclick="startGame()">Start Game</button>
+        <br>
+        <button id="clickButton" class="click-button" onclick="clickHandler()" disabled>
+            CLICK ME!
+        </button>
+        
+        <div id="message" class="message info">
+            Ready to start? Click the start button!
+        </div>
+    </div>
+
+    <script>
+        let gameStarted = false;
+        let gameOver = false;
+        let timerInterval;
+        
+        function updateDisplay(data) {
+            document.getElementById('score').textContent = `${data.score || 0}/100`;
+            document.getElementById('timer').textContent = `${(data.elapsed_time || 0).toFixed(2)}s`;
+            
+            const progress = Math.min((data.score || 0) / 100 * 100, 100);
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+        
+        function showMessage(text, type = 'info') {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+        }
+        
+        function startGame() {
+            fetch('/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                gameStarted = true;
+                gameOver = false;
+                document.getElementById('startButton').disabled = true;
+                document.getElementById('clickButton').disabled = false;
+                updateDisplay(data);
+                showMessage(data.message, 'info');
+                
+                // Start timer update
+                timerInterval = setInterval(updateTimer, 10);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('Error starting game', 'error');
+            });
+        }
+        
+        function clickHandler() {
+            if (!gameStarted || gameOver) return;
+            
+            fetch('/click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateDisplay(data);
+                
+                if (data.game_over) {
+                    gameOver = true;
+                    document.getElementById('clickButton').disabled = true;
+                    document.getElementById('startButton').disabled = false;
+                    clearInterval(timerInterval);
+                    
+                    if (data.won) {
+                        showMessage('', 'success');
+                        document.getElementById('message').innerHTML = `
+                            ${data.message}<br>
+                            <div class="flag">${data.flag}</div>
+                        `;
+                    } else {
+                        showMessage(data.message, 'error');
+                    }
+                } else {
+                    showMessage(data.message, 'info');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('Error processing click', 'error');
+            });
+        }
+        
+        function updateTimer() {
+            fetch('/status')
+            .then(response => response.json())
+            .then(data => {
+                if (data.game_started && !gameOver) {
+                    updateDisplay(data);
+                    
+                    if (data.elapsed_time > 3.0 && !data.game_over) {
+                        // Time's up, trigger a click to end the game
+                        clickHandler();
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error updating timer:', error);
+            });
+        }
+        
+        // Add keyboard support for spacebar
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' && !document.getElementById('clickButton').disabled) {
+                event.preventDefault();
+                clickHandler();
+            }
+        });
+    </script>
+</body>
+</html> 

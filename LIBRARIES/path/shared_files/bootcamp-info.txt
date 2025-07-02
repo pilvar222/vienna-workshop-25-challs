@@ -1,0 +1,41 @@
+VIENNA HACKING BOOTCAMP - PROGRAM INFORMATION
+
+📅 Program Duration: 12 weeks intensive
+🏢 Location: Vienna, Austria
+👥 Cohort Size: 25 students maximum
+🎓 Certification: Vienna Hacking Bootcamp Certificate
+
+CURRICULUM OVERVIEW:
+Week 1-2: Network Security Fundamentals
+Week 3-4: Web Application Security
+Week 5-6: Mobile Application Security  
+Week 7-8: Malware Analysis & Reverse Engineering
+Week 9-10: Digital Forensics
+Week 11-12: Red Team Operations & Final Project
+
+TOOLS YOU'LL MASTER:
+- Burp Suite Professional
+- Metasploit Framework
+- Wireshark
+- IDA Pro
+- Volatility
+- Custom Python tools
+
+NOTABLE ALUMNI:
+- Sarah M. - Senior Security Consultant at Deloitte
+- Marcus K. - Lead Penetration Tester at Accenture  
+- Elena V. - Bug Bounty Hunter (6-figure earnings)
+- Johan P. - CISO at Austrian Bank
+
+APPLICATION REQUIREMENTS:
+- Computer Science or related degree
+- Basic programming knowledge (Python preferred)
+- Strong problem-solving skills
+- Ethical hacking mindset
+
+CONTACT:
+Email: admissions@viennaboocamp.at
+Phone: +43 1 234 5678
+Website: https://viennahackingbootcamp.at
+
+#ViennaHacking #CyberSecurity #EthicalHacking 
