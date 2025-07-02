@@ -1,6 +1,6 @@
 services:
   bot: # taken from https://github.com/kevin-mizu/bot-ctf-template - the modified part is surround by "VIENNA CHALLENGE SPECIFIC"
-    build: xss-bot/
+    build: bot/
     ports:
       - "9002:55555"
     environment:
