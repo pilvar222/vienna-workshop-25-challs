@@ -59,13 +59,6 @@ app.get('/view', (req, res) => {
         const sanitizedPath = sanitize(fileName);
         const filePath = path.join(APP_DIR, sanitizedPath);
         
-        // Security check: ensure the resolved path is within the allowed directory
-        if (!filePath.startsWith(APP_DIR)) {
-            return res.status(403).render('error', { 
-                message: 'Access denied',
-                details: 'File path is outside allowed directory' 
-            });
-        }
 
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {

