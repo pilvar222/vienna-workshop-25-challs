@@ -1,0 +1,22 @@
+services:
+  bot: # taken from https://github.com/kevin-mizu/bot-ctf-template - the modified part is surround by "VIENNA CHALLENGE SPECIFIC"
+    build: bot/
+    ports:
+      - "9006:55555"
+    environment:
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+      # - ENVIRONMENT=development
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+      - all
+    cap_add:
+      - CAP_SETGID # Needed for su-exec
+      - CAP_SETUID # Needed for su-exec
+    tmpfs:
+      - /tmp:mode=1733,exec
+  challenge:
+    build: app/
+    ports:
+      - "9007:80"
+    restart: unless-stopped

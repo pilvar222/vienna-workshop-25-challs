@@ -57,7 +57,7 @@ HTML_TEMPLATE = '''
         <h1>🎨 SVG Animation Studio</h1>
         <p>Create custom SVG animations by adjusting the parameters below!</p>
         
-        <form method="POST">
+        <form method="GET">
             <div class="form-group">
                 <label for="duration">Animation Duration (seconds):</label>
                 <input type="text" id="duration" name="duration" value="{{ duration }}" placeholder="2">
@@ -87,7 +87,7 @@ HTML_TEMPLATE = '''
             <svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
                 <rect width="100" height="100" x="150" y="50" fill="{{ from_color }}">
                     <!-- VULNERABLE: User input directly inserted as attributes -->
-                    <set attributeName="fill" to="{{ to_color }}" dur="{{ duration }}" repeatCount="{{ repeat_count }}" {{ extra_attrs|safe }} />
+                    <set attributeName="fill" to="{{ to_color }}" dur="{{ duration }}" repeatCount="{{ repeat_count }}" {{ extra_attrs }} />
                 </rect>
                 <text x="200" y="180" text-anchor="middle" font-family="Arial" font-size="14">
                     Animated Rectangle
@@ -106,42 +106,23 @@ HTML_TEMPLATE = '''
 </html>
 '''
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
-    duration = ""
-    from_color = ""
-    to_color = ""
-    repeat_count = ""
-    extra_attrs = ""
-    
-    if request.method == 'POST':
-        duration = request.form.get('duration', '')
-        from_color = request.form.get('from_color', '')
-        to_color = request.form.get('to_color', '')
-        repeat_count = request.form.get('repeat_count', '')
-        
-        # Basic HTML escaping for display values, but not for the SVG attributes
-        duration_display = html.escape(duration)
-        from_color_display = html.escape(from_color)
-        to_color_display = html.escape(to_color)
-        repeat_count_display = html.escape(repeat_count)
-        
-        # VULNERABILITY: No sanitization of attributes before inserting into SVG
-        # This allows arbitrary attribute injection in the <set> tag
-        
-        return render_template_string(HTML_TEMPLATE,
-                                    duration=duration,  # RAW - goes into dur attribute
-                                    from_color=from_color,  # RAW - goes into fill attribute  
-                                    to_color=to_color,  # RAW - goes into to attribute
-                                    repeat_count=repeat_count,  # RAW - goes into repeatCount attribute
-                                    extra_attrs=extra_attrs)
-    
-    return render_template_string(HTML_TEMPLATE,
-                                duration=duration,
-                                from_color=from_color,
-                                to_color=to_color,
-                                repeat_count=repeat_count,
-                                extra_attrs=extra_attrs)
+    # Get parameters from the query string, with sensible defaults
+    duration = request.args.get('duration', '')
+    from_color = request.args.get('from_color', '')
+    to_color = request.args.get('to_color', '')
+    repeat_count = request.args.get('repeat_count', '')
+    extra_attrs = request.args.get('extra_attrs', '')
+
+    return render_template_string(
+        HTML_TEMPLATE,
+        duration=duration,
+        from_color=from_color,
+        to_color=to_color,
+        repeat_count=repeat_count,
+        extra_attrs=extra_attrs
+    )
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True) 
+    app.run(host='0.0.0.0', port=80, debug=True) 
