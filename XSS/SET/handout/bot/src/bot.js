@@ -52,7 +52,7 @@ async function goto(url) {
 	await delay(1000);
 	await page.setCookie({
 		name: "flag",
-		value: "vienna{nameSPAAAACCEEEE}",
+		value: "vienna{fake_flag}",
 		domain: "challenge",
 		path: "/",
 		httpOnly: false,
